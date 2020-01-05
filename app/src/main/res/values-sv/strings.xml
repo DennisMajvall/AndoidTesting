@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GrundAktivitet</string>
+    <string name="btn_random">Slumpa</string>
+    <string name="btn_toast">Toast</string>
+    <string name="toast_hello">Hej toast!</string>
+    <string name="btn_increment">Öka</string>
+    <string name="action_settings">Inställningar</string>
+</resources>
