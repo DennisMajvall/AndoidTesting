@@ -9,5 +9,7 @@
     <string name="msg_concat">The message: %s</string>
     <string name="hello_world">Hello World!</string>
     <string name="button_toggle">Toggle Fragment</string>
+    <string name="button_change_to">Change to %s</string>
     <string name="input_name_hint">Name</string>
+    <string name="msg_hello_from">Hello from %s</string>
 </resources>

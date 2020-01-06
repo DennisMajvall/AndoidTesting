@@ -1,25 +1,29 @@
-package com.example.basicactivity
+package com.example.basicactivity.main2
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.basicactivity.R
+import com.example.basicactivity.User
 import com.example.basicactivity.fragment.AFragment
 import com.example.basicactivity.fragment.BFragment
 import com.example.basicactivity.intents.EXTRA_MESSAGE
-import com.example.basicactivity.list.RecyclerViewAdapter
+import com.example.basicactivity.userlist.UserRecyclerView
 import kotlinx.android.synthetic.main.activity_main2.*
 import kotlinx.android.synthetic.main.content_main2.*
 
 
-class Main2Activity : AppCompatActivity() {
-    lateinit var adapter: RecyclerViewAdapter
-    var users = arrayOf(
+class Main2Activity : AppCompatActivity(), UserRecyclerView.OnUserItemClickListener {
+    private lateinit var userRecyclerView: UserRecyclerView
+    private lateinit var viewModel: Main2ViewModel
+    private val users = arrayOf(
         User("Kalle", 35),
         User("Kajsa", 32),
         User("Mimmi", 27),
@@ -46,7 +50,9 @@ class Main2Activity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        setFragment(AFragment.newInstance())
+        viewModel = ViewModelProviders.of(this).get(Main2ViewModel::class.java)
+        setFragment(viewModel.currFragment)
+
         button.setOnClickListener(this::onButtonClick)
 
         val message = intent.getStringExtra(EXTRA_MESSAGE)
@@ -62,17 +68,17 @@ class Main2Activity : AppCompatActivity() {
         val dividerItemDecoration = DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
         recyclerView.addItemDecoration(dividerItemDecoration)
 
-        adapter = RecyclerViewAdapter(users)
-        recyclerView.adapter = adapter
+        userRecyclerView = UserRecyclerView(users, this)
+        recyclerView.adapter = userRecyclerView
     }
 
-    private fun setFragment(fragNewInstance: Fragment, tag: String = "") {
-        val manager: FragmentManager = supportFragmentManager
-        val transaction: FragmentTransaction = manager.beginTransaction()
+    private fun setFragment(newInstanceOfFragment: Fragment, tag: String = "") {
+        viewModel.currFragment = newInstanceOfFragment
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.replace(
             R.id.fragmentContainer,
-            fragNewInstance,
-            tag.ifEmpty { fragNewInstance.javaClass.simpleName }
+            newInstanceOfFragment,
+            tag.ifEmpty { newInstanceOfFragment.javaClass.simpleName }
         )
 
         transaction.commit()
@@ -80,19 +86,30 @@ class Main2Activity : AppCompatActivity() {
 
     private fun toggleFragmentAB(): String {
 
-        val curr: Fragment? = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+//        val curr: Fragment? = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
 //        val newFrag: Fragment = if (curr is AFragment) BFragment.newInstance() else AFragment.newInstance() // ternary instead of switch-case
+
+        val curr = viewModel.currFragment
         val newFrag: Fragment = when (curr) {
             is AFragment -> BFragment.newInstance()
             else -> AFragment.newInstance()
         }
 
         setFragment(newFrag)
-        return curr?.tag.toString()
+        return curr.tag.toString()
     }
 
     private fun onButtonClick(view: View) {
         val s = toggleFragmentAB()
-        (view as Button).text = "Change to $s"
+        (view as Button).text = getString(R.string.button_change_to, s)
+//        (view as Button).text = "Change to $s"
+    }
+
+    override fun onUserItemClicked(user: User) {
+        Toast.makeText(
+            this,
+            "${user.name} ${user.age}",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

@@ -6,4 +6,11 @@
     <string name="toast_hello">Hej toast!</string>
     <string name="btn_increment">Öka</string>
     <string name="action_settings">Inställningar</string>
+    <string name="msg_hello_from">Hej från %s</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="input_name_hint">Namn</string>
+    <string name="hello_world">Hej världen!</string>
+    <string name="button_toggle">Toggla Fragment</string>
+    <string name="msg_concat">Meddelandet: %s</string>
+    <string name="button_change_to">Ändra till %s</string>
 </resources>
