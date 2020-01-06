@@ -8,4 +8,6 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="msg_concat">The message: %s</string>
     <string name="hello_world">Hello World!</string>
+    <string name="button_toggle">Toggle Fragment</string>
+    <string name="input_name_hint">Name</string>
 </resources>

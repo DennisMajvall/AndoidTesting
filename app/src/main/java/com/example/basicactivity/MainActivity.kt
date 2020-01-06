@@ -2,12 +2,13 @@ package com.example.basicactivity
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.basicactivity.intents.EXTRA_MESSAGE
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -29,11 +30,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         btn_toast.setOnClickListener {
-            Toast.makeText(it.context, getString(R.string.toast_hello), Toast.LENGTH_LONG).show()
             val intent = Intent(this, Main2Activity::class.java).apply {
                 putExtra(EXTRA_MESSAGE, textView.text)
             }
             startActivity(intent)
+            Toast.makeText(it.context, getString(R.string.toast_hello), Toast.LENGTH_LONG).show()
         }
 
         btn_increment.setOnClickListener(this::count)
@@ -42,12 +43,12 @@ class MainActivity : AppCompatActivity() {
         randomNumber(null)
     }
 
-    private fun count(view: View){
+    private fun count(btn: View) {
         val curr = Integer.parseInt(textView.text.toString())
         textView.text = (curr+1).toString()
     }
 
-    private fun randomNumber(view: View?){
+    private fun randomNumber(btn: View?) {
         textView.text = ((Math.random() * 100.0).toInt().toString())
     }
 
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        Log.d("__", item.toString())
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
